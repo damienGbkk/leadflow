@@ -1,1 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadFlow — Listes B2B sur mesure</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; }
+  .hero { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%); padding: 80px 20px; text-align: center; }
+  .badge { display: inline-block; background: #1e3a5f; color: #60a5fa; padding: 6px 16px; border-radius: 20px; font-size: 13px; margin-bottom: 24px; }
+  h1 { font-size: 52px; font-weight: 700; line-height: 1.1; margin-bottom: 20px; }
+  h1 span { color: #60a5fa; }
+  .subtitle { font-size: 20px; color: #9ca3af; max-width: 600px; margin: 0 auto 40px; line-height: 1.6; }
+  .cta-btn { display: inline-block; background: #2563eb; color: #fff; padding: 16px 36px; border-radius: 8px; font-size: 16px; font-weight: 600; text-decoration: none; margin: 8px; }
+  .cta-btn:hover { background: #1d4ed8; }
+  .cta-secondary { background: transparent; border: 1px solid #374151; }
+  .section { padding: 80px 20px; max-width: 1000px; margin: 0 auto; }
+  .section-title { font-size: 36px; font-weight: 700; text-align: center; margin-bottom: 16px; }
+  .section-sub { text-align: center; color: #9ca3af; margin-bottom: 48px; font-size: 18px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .card { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 32px; }
+  .card.featured { border-color: #2563eb; position: relative; }
+  .card-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #2563eb; color: #fff; padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .price { font-size: 40px; font-weight: 700; margin: 16px 0 8px; }
+  .price span { font-size: 16px; color: #9ca3af; font-weight: 400; }
+  .card h3 { font-size: 20px; font-weight: 600; }
+  .card p { color: #9ca3af; font-size: 14px; margin-bottom: 24px; }
+  .features { list-style: none; margin-bottom: 32px; }
+  .features li { padding: 8px 0; color: #d1d5db; font-size: 15px; border-bottom: 1px solid #1f2937; }
+  .features li::before { content: "✓ "; color: #60a5fa; font-weight: 700; }
+  .btn { display: block; text-align: center; padding: 14px; border-radius: 8px; font-weight: 600; text-decoration: none; background: #1f2937; color: #fff; }
+  .btn-primary { background: #2563eb; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; text-align: center; }
+  .step-num { width: 48px; height: 48px; background: #1e3a5f; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #60a5fa; margin: 0 auto 16px; }
+  .step h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .step p { color: #9ca3af; font-size: 14px; }
+  .contact { background: #111827; border-radius: 16px; padding: 60px 40px; text-align: center; }
+  .contact h2 { font-size: 32px; font-weight: 700; margin-bottom: 16px; }
+  .contact p { color: #9ca3af; margin-bottom: 32px; font-size: 18px; }
+  .urgency { display: inline-block; background: #7f1d1d; color: #fca5a5; padding: 8px 20px; border-radius: 8px; font-size: 14px; margin-bottom: 32px; }
+  footer { text-align: center; padding: 40px; color: #4b5563; font-size: 14px; border-top: 1px solid #1f2937; }
+</style>
+</head>
+<body>
 
+<div class="hero">
+  <div class="badge">🚀 Offre de lancement — Places limitées</div>
+  <h1>Des prospects B2B qualifiés<br><span>livrés en 48h</span></h1>
+  <p class="subtitle">Arrêtez de perdre des heures à chercher manuellement. Vous définissez la cible, je génère la liste.</p>
+  <a href="https://linkedin.com/in/damien-gisbert" class="cta-btn">Commander maintenant</a>
+  <a href="#offres" class="cta-btn cta-secondary">Voir les offres</a>
+</div>
+
+<div class="section">
+  <h2 class="section-title">Comment ça marche</h2>
+  <p class="section-sub">Simple, rapide, efficace.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h4>Vous définissez votre cible</h4>
+      <p>Secteur, poste, localisation, taille d'entreprise — vous choisissez.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h4>Je génère votre liste</h4>
+      <p>Extraction automatisée depuis LinkedIn avec enrichissement des données.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h4>Vous recevez votre fichier</h4>
+      <p>Un fichier propre et prêt à l'emploi livré en 24-48h.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="offres">
+  <h2 class="section-title">Choisissez votre pack</h2>
+  <p class="section-sub">Tarifs clairs, sans surprise.</p>
+  <div class="cards">
+    <div class="card">
+      <h3>Starter</h3>
+      <div class="price">99€ <span style="text-decoration:line-through;font-size:18px;">199€</span></div>
+      <p>Offre de lancement</p>
+      <ul class="features">
+        <li>100 prospects ciblés</li>
+        <li>Prénom, Nom, Poste</li>
+        <li>Entreprise + LinkedIn</li>
+        <li>Livraison 48h</li>
+      </ul>
+      <a href="https://linkedin.com/in/damien-gisbert" class="btn">Commander</a>
+    </div>
+    <div class="card featured">
+      <div class="card-badge">⭐ Plus populaire</div>
+      <h3>Business</h3>
+      <div class="price">299€</div>
+      <p>Le plus choisi</p>
+      <ul class="features">
+        <li>300 prospects ciblés</li>
+        <li>Emails vérifiés inclus</li>
+        <li>Ciblage avancé</li>
+        <li>Livraison 72h</li>
+      </ul>
+      <a href="https://linkedin.com/in/damien-gisbert" class="btn btn-primary">Commander</a>
+    </div>
+    <div class="card">
+      <h3>Pro Mensuel</h3>
+      <div class="price">499€ <span>/mois</span></div>
+      <p>Flux continu de prospects</p>
+      <ul class="features">
+        <li>500 prospects/mois</li>
+        <li>Emails + téléphones</li>
+        <li>Rapport mensuel</li>
+        <li>Support prioritaire</li>
+      </ul>
+      <a href="https://linkedin.com/in/damien-gisbert" class="btn">Commander</a>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="contact">
+    <div class="urgency">⚡ 3 slots disponibles cette semaine</div>
+    <h2>Prêt à remplir votre pipeline ?</h2>
+    <p>Contactez-moi directement sur LinkedIn pour démarrer.</p>
+    <a href="https://linkedin.com/in/damien-gisbert" class="cta-btn">Envoyer un message</a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 LeadFlow — Listes B2B sur mesure · Bangkok, Thaïlande</p>
+</footer>
+
+</body>
+</html>

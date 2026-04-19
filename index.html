@@ -15,646 +15,201 @@
   <script src="https://tally.so/widgets/embed.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #090909;
-      --bg2: #111111;
-      --bg3: #181818;
-      --gold: #C9A84C;
-      --gold2: #E8C96A;
-      --gold-dim: #7a6330;
-      --text: #F0EDE8;
-      --muted: #888880;
-      --faint: #444440;
-      --border: #232323;
-      --border2: #2e2e2e;
+      --bg: #090909; --bg2: #111111; --bg3: #181818;
+      --gold: #C9A84C; --gold2: #E8C96A; --gold-dim: #7a6330;
+      --text: #F0EDE8; --muted: #888880; --faint: #444440;
+      --border: #232323; --border2: #2e2e2e;
     }
-
     html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.6; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* GRAIN OVERLAY */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 1000;
-      opacity: 0.6;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(201,168,76,0.08);
-      backdrop-filter: blur(20px);
-      background: rgba(9,9,9,0.85);
-    }
-
-    .logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: -0.5px;
-      color: var(--text);
-      text-decoration: none;
-    }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(201,168,76,0.08); backdrop-filter: blur(20px); background: rgba(9,9,9,0.85); }
+    .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: var(--text); text-decoration: none; }
     .logo em { color: var(--gold); font-style: normal; }
-
-    nav ul {
-      display: flex;
-      gap: 36px;
-      list-style: none;
-    }
-    nav ul a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
+    nav ul { display: flex; gap: 36px; list-style: none; }
+    nav ul a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.2s; }
     nav ul a:hover { color: var(--text); }
+    .nav-cta { background: var(--gold); color: #000 !important; padding: 9px 20px; border-radius: 4px; font-weight: 600 !important; text-transform: none !important; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--gold2) !important; }
 
-    .nav-cta {
-      background: var(--gold);
-      color: #000 !important;
-      padding: 9px 20px;
-      border-radius: 4px;
-      font-weight: 600 !important;
-      font-size: 13px !important;
-      letter-spacing: 0.3px !important;
-      text-transform: none !important;
-      transition: background 0.2s !important;
-      cursor: pointer;
-    }
-    .nav-cta:hover { background: var(--gold2) !important; color: #000 !important; }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 140px 40px 80px; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; top: -200px; right: -200px; width: 700px; height: 700px; background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%); pointer-events: none; }
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 140px 40px 80px;
-      position: relative;
-      overflow: hidden;
-    }
+    .beta-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25); color: var(--gold); font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 36px; width: fit-content; }
+    .beta-badge::before { content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
 
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: -200px; right: -200px;
-      width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .beta-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(201,168,76,0.1);
-      border: 1px solid rgba(201,168,76,0.25);
-      color: var(--gold);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 6px 14px;
-      border-radius: 100px;
-      margin-bottom: 36px;
-      width: fit-content;
-    }
-    .beta-badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--gold);
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
-    }
-
-    .hero h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(72px, 10vw, 130px);
-      line-height: 0.92;
-      letter-spacing: 1px;
-      color: var(--text);
-      margin-bottom: 32px;
-      max-width: 900px;
-    }
-    .hero h1 em {
-      color: var(--gold);
-      font-style: normal;
-    }
-
-    .hero-sub {
-      font-size: 18px;
-      color: var(--muted);
-      max-width: 560px;
-      line-height: 1.7;
-      margin-bottom: 48px;
-      font-weight: 300;
-    }
+    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(72px, 10vw, 130px); line-height: 0.92; color: var(--text); margin-bottom: 32px; max-width: 900px; }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero-sub { font-size: 18px; color: var(--muted); max-width: 580px; line-height: 1.7; margin-bottom: 14px; font-weight: 300; }
     .hero-sub strong { color: var(--text); font-weight: 500; }
+    .hero-portal-teaser { font-size: 14px; color: var(--gold-dim); max-width: 580px; margin-bottom: 40px; display: flex; align-items: center; gap: 8px; }
+    .hero-portal-teaser b { color: var(--gold); }
 
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 72px;
-    }
-
-    .btn-primary {
-      background: var(--gold);
-      color: #000;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 15px;
-      padding: 14px 28px;
-      border-radius: 4px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 72px; }
+    .btn-primary { background: var(--gold); color: #000; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; padding: 14px 28px; border-radius: 4px; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
     .btn-primary:hover { background: var(--gold2); transform: translateY(-1px); }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--muted);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 400;
-      font-size: 15px;
-      padding: 14px 24px;
-      border-radius: 4px;
-      text-decoration: none;
-      border: 1px solid var(--border2);
-      transition: all 0.2s;
-    }
+    .btn-ghost { background: transparent; color: var(--muted); font-size: 15px; padding: 14px 24px; border-radius: 4px; text-decoration: none; border: 1px solid var(--border2); transition: all 0.2s; }
     .btn-ghost:hover { color: var(--text); border-color: var(--faint); }
 
-    /* STATS BAR */
-    .stats-bar {
-      display: flex;
-      gap: 0;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-      max-width: 640px;
-    }
-    .stat {
-      flex: 1;
-      padding: 20px 24px;
-      border-right: 1px solid var(--border);
-      text-align: center;
-    }
+    .stats-bar { display: flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; max-width: 640px; }
+    .stat { flex: 1; padding: 20px 24px; border-right: 1px solid var(--border); text-align: center; }
     .stat:last-child { border-right: none; }
-    .stat-value {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 36px;
-      color: var(--gold);
-      line-height: 1;
-      display: block;
-    }
-    .stat-label {
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 4px;
-      display: block;
-    }
+    .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--gold); line-height: 1; display: block; }
+    .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; display: block; }
 
-    /* MOCK LIST PREVIEW */
-    .preview-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0;
-      overflow: hidden;
-      max-width: 440px;
-      position: absolute;
-      right: 60px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    .preview-header {
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .preview-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .preview-badge {
-      background: rgba(201,168,76,0.1);
-      color: var(--gold);
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 100px;
-      font-weight: 600;
-    }
-    .preview-row {
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
+    .preview-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; max-width: 440px; position: absolute; right: 60px; top: 50%; transform: translateY(-50%); }
+    .preview-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .preview-title { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .preview-badge { background: rgba(201,168,76,0.1); color: var(--gold); font-size: 10px; padding: 3px 8px; border-radius: 100px; font-weight: 600; }
+    .preview-row { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
     .preview-row:last-child { border-bottom: none; }
-    .avatar {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: var(--bg3);
-      border: 1px solid var(--border2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Syne', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--gold);
-      flex-shrink: 0;
-    }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--bg3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: var(--gold); flex-shrink: 0; }
     .preview-info { flex: 1; }
     .preview-name { font-size: 13px; font-weight: 500; color: var(--text); }
     .preview-role { font-size: 11px; color: var(--muted); margin-top: 1px; }
-    .score-badge {
-      background: rgba(201,168,76,0.12);
-      color: var(--gold);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 4px;
-    }
+    .score-badge { background: rgba(201,168,76,0.12); color: var(--gold); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
 
-    /* SECTION BASE */
     section { padding: 100px 40px; }
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--gold-dim);
-      margin-bottom: 16px;
-    }
-    h2 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(48px, 6vw, 80px);
-      line-height: 0.95;
-      color: var(--text);
-      margin-bottom: 20px;
-    }
+    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 16px; }
+    h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 6vw, 80px); line-height: 0.95; color: var(--text); margin-bottom: 20px; }
     h2 em { color: var(--gold); font-style: normal; }
 
-    /* HOW IT WORKS */
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      margin-top: 60px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .step {
-      background: var(--bg2);
-      padding: 48px 36px;
-      border-right: 1px solid var(--border);
-      position: relative;
-    }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .step { background: var(--bg2); padding: 48px 36px; border-right: 1px solid var(--border); }
     .step:last-child { border-right: none; }
-    .step-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 80px;
-      color: var(--faint);
-      line-height: 1;
-      margin-bottom: 16px;
-      display: block;
-    }
-    .step h3 {
-      font-family: 'Syne', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
+    .step-num { font-family: 'Bebas Neue', sans-serif; font-size: 80px; color: var(--faint); line-height: 1; margin-bottom: 16px; display: block; }
+    .step h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
     .step p { font-size: 14px; color: var(--muted); line-height: 1.7; }
 
-    /* COMPARISON */
-    .compare-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      margin-top: 60px;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
+    /* PORTAL */
+    .portal-section { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .portal-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: center; }
+    .portal-left p { font-size: 16px; color: var(--muted); line-height: 1.8; margin-bottom: 32px; }
+    .portal-features { display: flex; flex-direction: column; gap: 14px; }
+    .portal-feature { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; }
+    .portal-feature-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+    .portal-feature-text strong { display: block; font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .portal-feature-text span { font-size: 12px; color: var(--muted); }
+
+    .portal-mock { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.6); }
+    .portal-mock-bar { background: var(--bg3); padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; }
+    .mock-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .mock-dot-r { background: #ff5f57; } .mock-dot-y { background: #ffbd2e; } .mock-dot-g { background: #28ca42; }
+    .portal-mock-url { flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; font-size: 10px; color: var(--faint); margin-left: 8px; font-family: monospace; }
+    .portal-mock-body { display: flex; min-height: 380px; }
+    .portal-sidebar { width: 140px; background: var(--bg2); border-right: 1px solid var(--border); padding: 16px 0; flex-shrink: 0; }
+    .portal-sidebar-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; color: var(--text); padding: 0 16px 16px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+    .portal-sidebar-logo em { color: var(--gold); font-style: normal; }
+    .sidebar-item { padding: 9px 16px; font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+    .sidebar-item.active { background: rgba(201,168,76,0.08); color: var(--gold); border-left: 2px solid var(--gold); }
+    .sidebar-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--faint); flex-shrink: 0; }
+    .sidebar-item.active .sidebar-dot { background: var(--gold); }
+    .portal-main { flex: 1; padding: 20px; overflow: hidden; }
+    .portal-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+    .kpi-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 14px; }
+    .kpi-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .kpi-value { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); line-height: 1; }
+    .kpi-sub { font-size: 9px; color: var(--faint); margin-top: 2px; }
+    .portal-tabs { display: flex; margin-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .portal-tab { font-size: 10px; color: var(--muted); padding: 6px 12px; }
+    .portal-tab.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
+    .portal-table-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .portal-table-title { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 1px; }
+    .portal-table-btn { background: var(--gold); color: #000; font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 3px; }
+    .portal-leads { display: flex; flex-direction: column; gap: 6px; }
+    .portal-lead-row { background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+    .mini-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--bg2); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: var(--gold); flex-shrink: 0; }
+    .lead-info { flex: 1; }
+    .lead-name { font-size: 11px; font-weight: 500; color: var(--text); }
+    .lead-role { font-size: 9px; color: var(--muted); }
+    .lead-status { font-size: 9px; padding: 2px 7px; border-radius: 100px; font-weight: 600; }
+    .status-new { background: rgba(201,168,76,0.12); color: var(--gold); }
+    .status-contacted { background: rgba(40,202,66,0.12); color: #28ca42; }
+    .status-replied { background: rgba(99,102,241,0.12); color: #818cf8; }
+    .mini-score { font-size: 10px; font-weight: 700; color: var(--gold); font-family: 'Syne', sans-serif; }
+
+    /* COMPARE */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 60px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
     .compare-col { background: var(--bg2); }
-    .compare-header {
-      padding: 24px 32px;
-      border-bottom: 1px solid var(--border);
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 15px;
-    }
+    .compare-header { padding: 24px 32px; border-bottom: 1px solid var(--border); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
     .compare-col:first-child .compare-header { color: var(--muted); }
     .compare-col:last-child .compare-header { color: var(--gold); }
     .compare-col:last-child { border-left: 1px solid var(--border); }
-    .compare-item {
-      padding: 16px 32px;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
+    .compare-item { padding: 16px 32px; border-bottom: 1px solid var(--border); font-size: 14px; display: flex; align-items: flex-start; gap: 12px; }
     .compare-item:last-child { border-bottom: none; }
     .compare-col:first-child .compare-item { color: var(--muted); }
-    .compare-col:first-child .compare-item::before { content: '✕'; color: var(--faint); flex-shrink: 0; }
+    .compare-col:first-child .compare-item::before { content: 'x'; color: var(--faint); flex-shrink: 0; }
     .compare-col:last-child .compare-item { color: var(--text); }
-    .compare-col:last-child .compare-item::before { content: '✓'; color: var(--gold); flex-shrink: 0; }
+    .compare-col:last-child .compare-item::before { content: 'v'; color: var(--gold); flex-shrink: 0; }
 
     /* GUARANTEE */
-    .guarantee-section {
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .guarantee-inner {
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .guarantee-icon {
-      font-size: 48px;
-      margin-bottom: 24px;
-      display: block;
-    }
+    .guarantee-section { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .guarantee-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+    .guarantee-icon { font-size: 48px; margin-bottom: 24px; display: block; }
     .guarantee-inner h2 { font-size: clamp(40px, 5vw, 64px); margin-bottom: 20px; }
-    .guarantee-inner p {
-      font-size: 17px;
-      color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 32px;
-    }
-    .guarantee-items {
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      flex-wrap: wrap;
-      margin-top: 40px;
-    }
-    .guarantee-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      color: var(--text);
-    }
+    .guarantee-inner p { font-size: 17px; color: var(--muted); line-height: 1.8; margin-bottom: 32px; }
+    .guarantee-items { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-top: 40px; }
+    .guarantee-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text); }
     .guarantee-item span { color: var(--gold); font-size: 18px; }
 
     /* PRICING */
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 60px;
-    }
-    .pricing-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 36px 32px;
-      position: relative;
-      transition: border-color 0.2s;
-    }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 60px; }
+    .pricing-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 36px 32px; position: relative; transition: border-color 0.2s; }
     .pricing-card:hover { border-color: var(--gold-dim); }
-    .pricing-card.featured {
-      border-color: var(--gold);
-      background: var(--bg3);
-    }
-    .featured-label {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--gold);
-      color: #000;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 4px 14px;
-      border-radius: 100px;
-      white-space: nowrap;
-    }
-    .pricing-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-    .pricing-price {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 56px;
-      color: var(--text);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
+    .pricing-card.featured { border-color: var(--gold); background: var(--bg3); }
+    .featured-label { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 14px; border-radius: 100px; white-space: nowrap; }
+    .pricing-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 16px; }
+    .pricing-price { font-family: 'Bebas Neue', sans-serif; font-size: 56px; color: var(--text); line-height: 1; margin-bottom: 4px; }
     .pricing-price span { font-size: 28px; color: var(--muted); }
     .pricing-period { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
-    .pricing-divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
+    .pricing-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
     .pricing-features { list-style: none; }
-    .pricing-features li {
-      font-size: 14px;
-      color: var(--muted);
-      padding: 8px 0;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-    .pricing-features li::before { content: '—'; color: var(--gold-dim); flex-shrink: 0; }
+    .pricing-features li { font-size: 14px; color: var(--muted); padding: 8px 0; display: flex; align-items: flex-start; gap: 10px; }
+    .pricing-features li::before { content: '-'; color: var(--gold-dim); flex-shrink: 0; }
     .pricing-features li.highlight { color: var(--text); }
-    .pricing-features li.highlight::before { content: '✓'; color: var(--gold); }
-    .pricing-cta {
-      display: block;
-      text-align: center;
-      margin-top: 28px;
-      padding: 13px;
-      border-radius: 4px;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-    .pricing-cta-outline {
-      border: 1px solid var(--border2);
-      color: var(--muted);
-    }
+    .pricing-features li.highlight::before { content: 'v'; color: var(--gold); }
+    .pricing-features li.portal-highlight { color: var(--gold); background: rgba(201,168,76,0.06); padding: 10px; border-radius: 5px; border: 1px solid rgba(201,168,76,0.15); margin-top: 4px; }
+    .pricing-features li.portal-highlight::before { content: '*'; color: var(--gold); }
+    .pricing-cta { display: block; text-align: center; margin-top: 28px; padding: 13px; border-radius: 4px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+    .pricing-cta-outline { border: 1px solid var(--border2); color: var(--muted); }
     .pricing-cta-outline:hover { border-color: var(--faint); color: var(--text); }
-    .pricing-cta-gold {
-      background: var(--gold);
-      color: #000;
-    }
+    .pricing-cta-gold { background: var(--gold); color: #000; }
     .pricing-cta-gold:hover { background: var(--gold2); }
 
-    /* BETA SECTION */
-    .beta-section {
-      background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .beta-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-    .beta-left p {
-      font-size: 16px;
-      color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
-    .beta-clients {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 32px;
-    }
-    .beta-client {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 18px;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-    }
-    .beta-client-avatar {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      background: var(--bg3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Syne', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--gold);
-      border: 1px solid var(--border2);
-      flex-shrink: 0;
-    }
+    /* BETA */
+    .beta-section { background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .beta-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .beta-left p { font-size: 16px; color: var(--muted); line-height: 1.8; margin-bottom: 20px; }
+    .beta-clients { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+    .beta-client { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; }
+    .beta-client-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .beta-client-info { flex: 1; }
     .beta-client-name { font-size: 13px; font-weight: 500; color: var(--text); }
     .beta-client-role { font-size: 11px; color: var(--muted); margin-top: 1px; }
-    .beta-client-status {
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--gold);
-      background: rgba(201,168,76,0.1);
-      padding: 3px 8px;
-      border-radius: 100px;
-    }
+    .beta-client-status { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); background: rgba(201,168,76,0.1); padding: 3px 8px; border-radius: 100px; }
 
-    /* TALLY FORM SECTION */
-    .form-section {
-      background: var(--bg);
-    }
-    .form-wrapper {
-      max-width: 680px;
-      margin: 0 auto;
-      text-align: center;
-    }
+    .form-section { background: var(--bg); }
+    .form-wrapper { max-width: 680px; margin: 0 auto; text-align: center; }
     .form-wrapper h2 { margin-bottom: 12px; }
-    .form-wrapper .sub {
-      font-size: 16px;
-      color: var(--muted);
-      margin-bottom: 48px;
-    }
-    .tally-container {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
+    .form-wrapper .sub { font-size: 16px; color: var(--muted); margin-bottom: 48px; }
+    .tally-container { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 
-    /* FOOTER */
-    footer {
-      padding: 40px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .footer-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 18px;
-      color: var(--text);
-      text-decoration: none;
-    }
+    footer { padding: 40px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: var(--text); text-decoration: none; }
     .footer-logo em { color: var(--gold); font-style: normal; }
-    footer nav ul {
-      display: flex;
-      gap: 28px;
-    }
-    footer p {
-      font-size: 12px;
-      color: var(--faint);
-    }
+    footer nav ul { display: flex; gap: 28px; }
+    footer p { font-size: 12px; color: var(--faint); }
 
-    /* RESPONSIVE */
     @media (max-width: 900px) {
       nav ul { display: none; }
       .hero { padding: 120px 24px 60px; }
       .preview-card { display: none; }
       .steps { grid-template-columns: 1fr; }
       .step { border-right: none; border-bottom: 1px solid var(--border); }
+      .portal-inner { grid-template-columns: 1fr; gap: 40px; }
       .compare-grid { grid-template-columns: 1fr; }
       .compare-col:last-child { border-left: none; border-top: 1px solid var(--border); }
       .pricing-grid { grid-template-columns: 1fr; }
@@ -663,14 +218,11 @@
       footer { flex-direction: column; gap: 20px; text-align: center; }
     }
 
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
     .hero .beta-badge { animation: fadeUp 0.5s ease both; }
     .hero h1 { animation: fadeUp 0.5s 0.1s ease both; }
     .hero-sub { animation: fadeUp 0.5s 0.2s ease both; }
+    .hero-portal-teaser { animation: fadeUp 0.5s 0.25s ease both; }
     .hero-actions { animation: fadeUp 0.5s 0.3s ease both; }
     .stats-bar { animation: fadeUp 0.5s 0.4s ease both; }
     .preview-card { animation: fadeUp 0.6s 0.3s ease both; }
@@ -678,89 +230,64 @@
 </head>
 <body>
 
-  <!-- NAV -->
   <nav>
     <a href="#" class="logo">Lead<em>Flow</em></a>
     <ul>
       <li><a href="#processus">How it works</a></li>
+      <li><a href="#portal">Portal</a></li>
       <li><a href="#tarifs">Pricing</a></li>
-      <li><a href="#beta">Beta</a></li>
       <li><a href="#form" class="nav-cta">Get 10 Free Leads</a></li>
     </ul>
   </nav>
 
-  <!-- HERO -->
   <section class="hero">
-    <div class="beta-badge">Beta · 2 spots open</div>
-    <h1>YOUR PROSPECTS.<br><em>DELIVERED.</em><br>IN 48H.</h1>
+    <div class="beta-badge">Early access &middot; First clients onboarding now</div>
+    <h1>STOP WASTING<br>HOURS ON<br><em>LINKEDIN.</em></h1>
     <p class="hero-sub">
-      You define the target. I deliver the list — <strong>name, title, LinkedIn, email, AI score</strong> — ready to prospect. You close. You stop searching.
+      You're spending 3+ hours a day searching for contacts that may not even reply. <strong>LeadFlow delivers your exact prospect list in 48h</strong> &mdash; name, title, LinkedIn, verified email, AI score.
+    </p>
+    <p class="hero-portal-teaser">
+      <b>+</b> Every client gets a private sales portal &mdash; manage leads, track outreach, run campaigns. Included.
     </p>
     <div class="hero-actions">
-      <a href="#form" class="btn-primary">Get 10 Free Leads →</a>
-      <a href="#processus" class="btn-ghost">See how it works</a>
+      <a href="#form" class="btn-primary">Get 10 Free Leads &rarr;</a>
+      <a href="#portal" class="btn-ghost">See the portal</a>
     </div>
     <div class="stats-bar">
-      <div class="stat">
-        <span class="stat-value">48h</span>
-        <span class="stat-label">Delivery</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">150+</span>
-        <span class="stat-label">Leads / list</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">AI</span>
-        <span class="stat-label">Score included</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">0h</span>
-        <span class="stat-label">Wasted searching</span>
-      </div>
+      <div class="stat"><span class="stat-value">48h</span><span class="stat-label">Delivery</span></div>
+      <div class="stat"><span class="stat-value">150+</span><span class="stat-label">Leads / list</span></div>
+      <div class="stat"><span class="stat-value">AI</span><span class="stat-label">Score included</span></div>
+      <div class="stat"><span class="stat-value">CRM</span><span class="stat-label">Portal included</span></div>
     </div>
 
-    <!-- MOCK PREVIEW -->
     <div class="preview-card">
       <div class="preview-header">
-        <span class="preview-title">Bangkok MDs · 150 profiles</span>
+        <span class="preview-title">Bangkok MDs &middot; 150 profiles</span>
         <span class="preview-badge">Live</span>
       </div>
       <div class="preview-row">
         <div class="avatar">SD</div>
-        <div class="preview-info">
-          <div class="preview-name">Simon Decalf</div>
-          <div class="preview-role">Sales Director · MCLL Asia</div>
-        </div>
+        <div class="preview-info"><div class="preview-name">Simon Decalf</div><div class="preview-role">Sales Director &middot; MCLL Asia</div></div>
         <span class="score-badge">9/10</span>
       </div>
       <div class="preview-row">
         <div class="avatar">AB</div>
-        <div class="preview-info">
-          <div class="preview-name">Alexandre Besson</div>
-          <div class="preview-role">Co-Founder · Strevio.ai</div>
-        </div>
+        <div class="preview-info"><div class="preview-name">Alexandre Besson</div><div class="preview-role">Co-Founder &middot; Strevio.ai</div></div>
         <span class="score-badge">8/10</span>
       </div>
       <div class="preview-row">
         <div class="avatar">VR</div>
-        <div class="preview-info">
-          <div class="preview-name">Vincent Ribière</div>
-          <div class="preview-role">Managing Director · Bangkok</div>
-        </div>
+        <div class="preview-info"><div class="preview-name">Vincent Ribiere</div><div class="preview-role">Managing Director &middot; Bangkok</div></div>
         <span class="score-badge">8/10</span>
       </div>
       <div class="preview-row">
         <div class="avatar">WS</div>
-        <div class="preview-info">
-          <div class="preview-name">Waraporn Siriboonma</div>
-          <div class="preview-role">CEO & Founder · Bangkok</div>
-        </div>
+        <div class="preview-info"><div class="preview-name">Waraporn Siriboonma</div><div class="preview-role">CEO &amp; Founder &middot; Bangkok</div></div>
         <span class="score-badge">7/10</span>
       </div>
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
   <section id="processus">
     <div class="section-label">The process</div>
     <h2>THREE STEPS.<br><em>ONE RESULT.</em></h2>
@@ -768,72 +295,170 @@
       <div class="step">
         <span class="step-num">01</span>
         <h3>You define the target</h3>
-        <p>Industry, title, location, company size — every criterion is defined with you via a 2-minute brief form. Zero meeting required.</p>
+        <p>Industry, title, location, company size &mdash; every criterion defined via a 2-minute brief form. Zero meeting required.</p>
       </div>
       <div class="step">
         <span class="step-num">02</span>
-        <h3>I source & qualify</h3>
-        <p>LinkedIn extraction, email enrichment, AI scoring — every profile evaluated, cleaned and scored before delivery. No duplicates, no dead data.</p>
+        <h3>I source &amp; qualify</h3>
+        <p>LinkedIn extraction, email enrichment, AI scoring &mdash; every profile evaluated, cleaned and scored before delivery. No duplicates, no dead data.</p>
       </div>
       <div class="step">
         <span class="step-num">03</span>
-        <h3>You receive & prospect</h3>
-        <p>Secure online portal or CSV export. Your prospects are ready to contact from day one. No configuration, no tool to learn.</p>
+        <h3>You prospect from your portal</h3>
+        <p>Your leads land in your private sales portal. Track status, manage campaigns, log outreach &mdash; everything in one place, ready from day one.</p>
       </div>
     </div>
   </section>
 
-  <!-- COMPARISON -->
+  <section class="portal-section" id="portal">
+    <div class="portal-inner">
+      <div class="portal-left">
+        <div class="section-label">Included with every plan</div>
+        <h2>YOUR PRIVATE<br><em>SALES PORTAL.</em></h2>
+        <p>Every LeadFlow client gets access to a role-based sales portal. Your leads, campaigns and outreach history &mdash; all in one secure space. No extra tool to buy, no setup required.</p>
+        <div class="portal-features">
+          <div class="portal-feature">
+            <div class="portal-feature-icon">&#128203;</div>
+            <div class="portal-feature-text">
+              <strong>Lead Management</strong>
+              <span>Browse your full lead list with AI score, email, LinkedIn, status and company data.</span>
+            </div>
+          </div>
+          <div class="portal-feature">
+            <div class="portal-feature-icon">&#128227;</div>
+            <div class="portal-feature-text">
+              <strong>Campaign Manager</strong>
+              <span>Create and track outreach campaigns. See every touch point per lead, per campaign.</span>
+            </div>
+          </div>
+          <div class="portal-feature">
+            <div class="portal-feature-icon">&#128202;</div>
+            <div class="portal-feature-text">
+              <strong>Live KPI Dashboard</strong>
+              <span>Total leads, active campaigns, outreach activity &mdash; your pipeline at a glance.</span>
+            </div>
+          </div>
+          <div class="portal-feature">
+            <div class="portal-feature-icon">&#128274;</div>
+            <div class="portal-feature-text">
+              <strong>Invite-only access</strong>
+              <span>Your portal is private. Login via Google. Only you and your team see your data.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="portal-right">
+        <div class="portal-mock">
+          <div class="portal-mock-bar">
+            <div class="mock-dot mock-dot-r"></div>
+            <div class="mock-dot mock-dot-y"></div>
+            <div class="mock-dot mock-dot-g"></div>
+            <div class="portal-mock-url">portal.leadflow.io &middot; Your workspace</div>
+          </div>
+          <div class="portal-mock-body">
+            <div class="portal-sidebar">
+              <div class="portal-sidebar-logo">Lead<em>Flow</em></div>
+              <div class="sidebar-item active"><div class="sidebar-dot"></div> Dashboard</div>
+              <div class="sidebar-item"><div class="sidebar-dot"></div> My Leads</div>
+              <div class="sidebar-item"><div class="sidebar-dot"></div> Campaigns</div>
+              <div class="sidebar-item"><div class="sidebar-dot"></div> Outreach</div>
+            </div>
+            <div class="portal-main">
+              <div class="portal-kpis">
+                <div class="kpi-card"><div class="kpi-label">Total Leads</div><div class="kpi-value">150</div><div class="kpi-sub">Bangkok &middot; MD list</div></div>
+                <div class="kpi-card"><div class="kpi-label">Campaigns</div><div class="kpi-value">3</div><div class="kpi-sub">2 active</div></div>
+                <div class="kpi-card"><div class="kpi-label">Outreach</div><div class="kpi-value">47</div><div class="kpi-sub">this week</div></div>
+              </div>
+              <div class="portal-tabs">
+                <div class="portal-tab active">My Leads</div>
+                <div class="portal-tab">Campaigns</div>
+              </div>
+              <div class="portal-table-header">
+                <div class="portal-table-title">Recent leads</div>
+                <div class="portal-table-btn">+ New campaign</div>
+              </div>
+              <div class="portal-leads">
+                <div class="portal-lead-row">
+                  <div class="mini-avatar">SD</div>
+                  <div class="lead-info"><div class="lead-name">Simon Decalf</div><div class="lead-role">Sales Director &middot; MCLL Asia</div></div>
+                  <span class="lead-status status-contacted">Contacted</span>
+                  <span class="mini-score">9/10</span>
+                </div>
+                <div class="portal-lead-row">
+                  <div class="mini-avatar">AB</div>
+                  <div class="lead-info"><div class="lead-name">Alexandre Besson</div><div class="lead-role">Co-Founder &middot; Strevio.ai</div></div>
+                  <span class="lead-status status-replied">Replied</span>
+                  <span class="mini-score">8/10</span>
+                </div>
+                <div class="portal-lead-row">
+                  <div class="mini-avatar">VR</div>
+                  <div class="lead-info"><div class="lead-name">Vincent Ribiere</div><div class="lead-role">MD &middot; Bangkok</div></div>
+                  <span class="lead-status status-new">New</span>
+                  <span class="mini-score">8/10</span>
+                </div>
+                <div class="portal-lead-row">
+                  <div class="mini-avatar">WS</div>
+                  <div class="lead-info"><div class="lead-name">Waraporn Siriboonma</div><div class="lead-role">CEO &middot; Bangkok</div></div>
+                  <span class="lead-status status-new">New</span>
+                  <span class="mini-score">7/10</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section>
     <div class="section-label">Positioning</div>
     <h2>NOT A TOOL.<br><em>A SERVICE.</em></h2>
     <div class="compare-grid">
       <div class="compare-col">
-        <div class="compare-header">Apollo · Lusha · ZoomInfo</div>
-        <div class="compare-item">Cold database access — you search yourself</div>
+        <div class="compare-header">Apollo &middot; Lusha &middot; ZoomInfo</div>
+        <div class="compare-item">Cold database &mdash; you search yourself for hours</div>
         <div class="compare-item">$49 to $15,000/year mandatory subscription</div>
         <div class="compare-item">Global data, not adapted to your niche</div>
-        <div class="compare-item">Long learning curve, you're on your own</div>
+        <div class="compare-item">No CRM, no campaign tool, no support</div>
         <div class="compare-item">Hours wasted filtering irrelevant profiles</div>
-        <div class="compare-item">No human support when you need it</div>
+        <div class="compare-item">You're on your own from day one</div>
       </div>
       <div class="compare-col">
         <div class="compare-header">LeadFlow</div>
-        <div class="compare-item">Custom list, delivered turnkey — you prospect</div>
-        <div class="compare-item">€49 to €499 — transparent, no surprise</div>
+        <div class="compare-item">Custom list delivered turnkey &mdash; you prospect</div>
+        <div class="compare-item">49 to 499 EUR &mdash; transparent, no surprise</div>
         <div class="compare-item">100% your criteria, precision targeting</div>
-        <div class="compare-item">Operational in 48h, zero friction</div>
+        <div class="compare-item">Private portal: leads + campaigns + CRM included</div>
         <div class="compare-item">Every profile manually reviewed + AI scored</div>
-        <div class="compare-item">Dedicated human contact, at your service</div>
+        <div class="compare-item">Direct founder contact, always reachable</div>
       </div>
     </div>
   </section>
 
-  <!-- GUARANTEE -->
   <section class="guarantee-section">
     <div class="guarantee-inner">
-      <span class="guarantee-icon">🛡️</span>
+      <span class="guarantee-icon">&#128737;</span>
       <div class="section-label">Our commitment</div>
       <h2>NOT SATISFIED?<br><em>WE REDO IT.</em></h2>
-      <p>Every list delivered comes with a quality guarantee. If more than 20% of profiles are inaccurate or irrelevant, we redo your list free of charge — no questions asked. That's our standard, not a bonus.</p>
+      <p>Every list delivered comes with a quality guarantee. If more than 20% of profiles are inaccurate or irrelevant, we redo your list free of charge &mdash; no questions asked. That's our standard, not a bonus.</p>
       <div class="guarantee-items">
-        <div class="guarantee-item"><span>✓</span> 48h delivery guaranteed</div>
-        <div class="guarantee-item"><span>✓</span> Redo if 20%+ invalid profiles</div>
-        <div class="guarantee-item"><span>✓</span> No forced commitment</div>
-        <div class="guarantee-item"><span>✓</span> Human support included</div>
+        <div class="guarantee-item"><span>v</span> 48h delivery guaranteed</div>
+        <div class="guarantee-item"><span>v</span> Redo if 20%+ invalid profiles</div>
+        <div class="guarantee-item"><span>v</span> No forced commitment</div>
+        <div class="guarantee-item"><span>v</span> Portal access included</div>
       </div>
     </div>
   </section>
 
-  <!-- PRICING -->
   <section id="tarifs">
     <div class="section-label">Pricing</div>
     <h2>SIMPLE.<br><em>TRANSPARENT.</em></h2>
     <div class="pricing-grid">
       <div class="pricing-card">
         <div class="pricing-name">Solo</div>
-        <div class="pricing-price"><span>€</span>49</div>
-        <div class="pricing-period">one-shot · test the quality</div>
+        <div class="pricing-price"><span>&#8364;</span>49</div>
+        <div class="pricing-period">one-shot &middot; test the quality</div>
         <hr class="pricing-divider">
         <ul class="pricing-features">
           <li class="highlight">50 qualified prospects</li>
@@ -842,142 +467,120 @@
           <li class="highlight">Clean CSV export</li>
           <li class="highlight">Delivery within 48h</li>
         </ul>
-        <a href="#form" class="pricing-cta pricing-cta-outline">Start →</a>
+        <a href="#form" class="pricing-cta pricing-cta-outline">Start &rarr;</a>
       </div>
       <div class="pricing-card featured">
         <span class="featured-label">Most chosen</span>
         <div class="pricing-name">Growth</div>
-        <div class="pricing-price"><span>€</span>349</div>
-        <div class="pricing-period">one-shot · full prospecting</div>
+        <div class="pricing-price"><span>&#8364;</span>349</div>
+        <div class="pricing-period">one-shot &middot; full prospecting setup</div>
         <hr class="pricing-divider">
         <ul class="pricing-features">
           <li class="highlight">200 qualified prospects</li>
           <li class="highlight">LinkedIn + verified pro email</li>
           <li class="highlight">AI score per profile</li>
-          <li class="highlight">Secure online portal access</li>
+          <li class="portal-highlight">Private portal &mdash; leads, campaigns &amp; CRM</li>
           <li class="highlight">LinkedIn sequence setup included</li>
           <li class="highlight">Personalized message per profile</li>
         </ul>
-        <a href="#form" class="pricing-cta pricing-cta-gold">Start →</a>
+        <a href="#form" class="pricing-cta pricing-cta-gold">Start &rarr;</a>
       </div>
       <div class="pricing-card">
         <div class="pricing-name">Pro</div>
-        <div class="pricing-price"><span>€</span>499</div>
-        <div class="pricing-period">per month · always-on pipeline</div>
+        <div class="pricing-price"><span>&#8364;</span>499</div>
+        <div class="pricing-period">per month &middot; always-on pipeline</div>
         <hr class="pricing-divider">
         <ul class="pricing-features">
           <li class="highlight">Fresh leads every month</li>
           <li class="highlight">LinkedIn + email + phone</li>
-          <li class="highlight">Weekly AI report</li>
-          <li class="highlight">Continuous criteria optimization</li>
-          <li class="highlight">Priority support</li>
+          <li class="portal-highlight">Full portal &mdash; unlimited campaigns &amp; CRM</li>
+          <li class="highlight">Weekly AI pipeline report</li>
+          <li class="highlight">Continuous targeting optimization</li>
+          <li class="highlight">Priority founder support</li>
         </ul>
-        <a href="#form" class="pricing-cta pricing-cta-outline">Start →</a>
+        <a href="#form" class="pricing-cta pricing-cta-outline">Start &rarr;</a>
       </div>
     </div>
   </section>
 
-  <!-- BETA SECTION -->
   <section class="beta-section" id="beta">
     <div class="beta-inner">
       <div class="beta-left">
-        <div class="section-label">Beta Program</div>
-        <h2>CURRENTLY<br><em>IN BETA.</em></h2>
-        <p>LeadFlow is in active beta. Two clients are currently testing the service on Bangkok Real Estate and AI/Tech. The methodology is proven, the pipeline is live.</p>
-        <p>Joining now means preferential rates, direct access, and shaping the product with us. 2 spots remaining.</p>
+        <div class="section-label">Early Access</div>
+        <h2>FIRST LISTS<br><em>DELIVERED.</em></h2>
+        <p>LeadFlow launched in early 2026. The first lists have been sourced, scored and delivered on two Bangkok verticals &mdash; Real Estate and AI/Tech. The process works.</p>
+        <p>Now onboarding first paying clients. Early access means lower rate, direct founder line, priority turnaround. No layers, no account manager, no fluff.</p>
         <div class="beta-clients">
           <div class="beta-client">
-            <div class="beta-client-avatar">S</div>
+            <div class="beta-client-avatar">&#127962;</div>
             <div class="beta-client-info">
-              <div class="beta-client-name">Simon — Real Estate Bangkok</div>
-              <div class="beta-client-role">Testing lead lists for property buyers & investors</div>
+              <div class="beta-client-name">Real Estate &middot; Bangkok</div>
+              <div class="beta-client-role">150 property investors &amp; buyers delivered</div>
             </div>
-            <span class="beta-client-status">Active</span>
+            <span class="beta-client-status">Done</span>
           </div>
           <div class="beta-client">
-            <div class="beta-client-avatar">A</div>
+            <div class="beta-client-avatar">&#129302;</div>
             <div class="beta-client-info">
-              <div class="beta-client-name">Alex — AI / Tech Bangkok</div>
-              <div class="beta-client-role">Testing lead lists for SaaS decision-makers</div>
+              <div class="beta-client-name">AI / Tech &middot; Bangkok</div>
+              <div class="beta-client-role">200 SaaS decision-makers in pipeline</div>
             </div>
             <span class="beta-client-status">Active</span>
           </div>
         </div>
       </div>
       <div class="beta-right">
-        <div class="preview-card" style="position:static; transform:none; max-width:100%;">
-          <div class="preview-header">
-            <span class="preview-title">Real Estate Bangkok · 150 profiles</span>
-            <span class="preview-badge">Beta Live</span>
-          </div>
-          <div class="preview-row">
-            <div class="avatar">MK</div>
-            <div class="preview-info">
-              <div class="preview-name">Michael Kerns</div>
-              <div class="preview-role">Property Investor · Bangkok</div>
+        <div style="background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 36px;">
+          <div class="section-label" style="margin-bottom: 20px;">What early clients get</div>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; gap: 14px; align-items: flex-start;">
+              <span style="color: var(--gold); font-size: 18px; flex-shrink:0;">v</span>
+              <div><div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px;">Early adopter rate</div><div style="font-size: 12px; color: var(--muted);">Lock in current pricing before it scales with demand.</div></div>
             </div>
-            <span class="score-badge">9/10</span>
-          </div>
-          <div class="preview-row">
-            <div class="avatar">JS</div>
-            <div class="preview-info">
-              <div class="preview-name">Jennifer Soo</div>
-              <div class="preview-role">MD · Luxury Property Group</div>
+            <div style="display: flex; gap: 14px; align-items: flex-start;">
+              <span style="color: var(--gold); font-size: 18px; flex-shrink:0;">v</span>
+              <div><div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px;">Direct founder access</div><div style="font-size: 12px; color: var(--muted);">WhatsApp / email. No ticket system. No wait.</div></div>
             </div>
-            <span class="score-badge">8/10</span>
-          </div>
-          <div class="preview-row">
-            <div class="avatar">TN</div>
-            <div class="preview-info">
-              <div class="preview-name">Thawin Nakorn</div>
-              <div class="preview-role">CEO · PropTech SEA</div>
+            <div style="display: flex; gap: 14px; align-items: flex-start;">
+              <span style="color: var(--gold); font-size: 18px; flex-shrink:0;">v</span>
+              <div><div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px;">Portal access from day one</div><div style="font-size: 12px; color: var(--muted);">Leads, campaigns and CRM ready as soon as your list is delivered.</div></div>
             </div>
-            <span class="score-badge">8/10</span>
+            <div style="display: flex; gap: 14px; align-items: flex-start;">
+              <span style="color: var(--gold); font-size: 18px; flex-shrink:0;">v</span>
+              <div><div style="font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px;">Priority delivery</div><div style="font-size: 12px; color: var(--muted);">Early clients jump the queue. 48h guaranteed, often faster.</div></div>
+            </div>
           </div>
+          <a href="#form" class="btn-primary" style="margin-top: 32px; justify-content: center; width: 100%;">Claim early access &rarr;</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- TALLY FORM -->
   <section class="form-section" id="form">
     <div class="form-wrapper">
       <div class="section-label">Get started free</div>
       <h2>10 FREE<br><em>LEADS.</em></h2>
-      <p class="sub">Tell us about your target. We deliver your first batch within 48h — no payment, no commitment.</p>
+      <p class="sub">Tell us about your target. We deliver your first batch within 48h &mdash; no payment, no commitment.</p>
       <div class="tally-container">
-        <iframe
-          data-tally-src="https://tally.so/embed/44N9KA?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-          loading="lazy"
-          width="100%"
-          height="400"
-          frameborder="0"
-          marginheight="0"
-          marginwidth="0"
-          title="Get Your 10 Free Leads"
-          style="padding: 32px;"
-        ></iframe>
+        <iframe data-tally-src="https://tally.so/embed/44N9KA?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="400" frameborder="0" marginheight="0" marginwidth="0" title="Get Your 10 Free Leads" style="padding: 32px;"></iframe>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <a href="#" class="footer-logo">Lead<em>Flow</em></a>
     <nav>
       <ul>
         <li><a href="#processus">Process</a></li>
+        <li><a href="#portal">Portal</a></li>
         <li><a href="#tarifs">Pricing</a></li>
-        <li><a href="#beta">Beta</a></li>
       </ul>
     </nav>
-    <p>© 2026 LeadFlow · Bangkok · SEA</p>
+    <p>&#169; 2026 LeadFlow &middot; Bangkok &middot; SEA</p>
   </footer>
 
   <script>
-    // Tally embed
     var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
   </script>
-
 </body>
 </html>
